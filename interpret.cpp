@@ -28,9 +28,10 @@ int main ( int argc, char *argv[] )
     char *nw = sr ;
     int op_index = 0 ;
     bool ok = 1 ;
-    for( ; ok && *nw && op_index < vlp.size() ; nw++, op_index++ )
-      if( ! check_fns[ vlp[ op_index ] ].str_chk( *nw ) )
+    for( ; ok && *nw && op_index < vlp.size() ; op_index++ )
+      if( ! check_fns[ vlp[ op_index ] ].str_chk( *( nw++ ) ) )
         ok = 0 ;
+    if( op_index != vlp.size() ) ok = 0 ;
     if( ok )
     {
       cout << "matches\n" ;
@@ -40,4 +41,5 @@ int main ( int argc, char *argv[] )
   }
   cout << "nope\n" ;
   return 0;
+
 }

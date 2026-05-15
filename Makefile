@@ -1,11 +1,6 @@
 compare.o: compare.cpp compare.h
 	gcc -fPIC -c compare.cpp -o compare.o
 
-test.o: test.cpp
-	gcc -fPIC -c test.cpp -o test.o
-test: compare.o test.o
-	g++ test.o compare.o -o test
-
 interpret.o: interpret.cpp
 	gcc -fPIC -c interpret.cpp -o interpret.o
 interpret: compare.o interpret.o
