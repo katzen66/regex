@@ -16,7 +16,10 @@ bool is_xdigit( char c ) { return ( is_digit( c ) || ( 'a' <= c && c <= 'f' ) ||
 
 char *match_alnum( char *c )
 {
-  const char *str = "[[:alnum:]]" ;
+  const char *str = "[[:alnum:]]", *shr = "\\w" ;
+  char *d = c ;
+  for( ; *shr && *shr == *d ; shr++, d++ ) ;
+  if( ! *shr ) return d ;
   for( ; *str && *str == *c; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
@@ -40,7 +43,10 @@ char *match_cntrl( char *c )
 }
 char *match_digit( char *c )
 {
-  const char *str = "[[:digit:]]" ;
+  const char *str = "[[:digit:]]", *shr = "\\d" ;
+  char *d = c ;
+  for( ; *shr && *shr == *d ; shr++, d++ ) ;
+  if( ! *shr ) return d ;
   for( ; *str && *str == *c; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
@@ -70,7 +76,10 @@ char *match_punct( char *c )
 }
 char *match_space( char *c )
 {
-  const char *str = "[[:space:]]" ;
+  const char *str = "[[:space:]]", *shr = "\\s" ;
+  char *d = c ;
+  for( ; *shr && *shr == *d ; shr++, d++ ) ;
+  if( ! *shr ) return d ;
   for( ; *str && *str == *c; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
@@ -88,7 +97,6 @@ char *match_xdigit( char *c )
 }
 
 check_pair check_fns[] = {
-
   { match_alnum, is_alnum },
   { match_alpha, is_alpha },
   { match_blank, is_blank },
