@@ -37,8 +37,10 @@ typedef struct
 } check_pair ;
 
 extern int matcher_count;
-extern check_pair check_fns[] ;
+extern check_pair check_fns[];
 
+#include <vector>
+std::vector < int > break_ops( char *rgx );
 
 struct REGEX_MATCH
 {

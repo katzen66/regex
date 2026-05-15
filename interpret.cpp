@@ -2,26 +2,10 @@
 #include <iostream>
 #include <vector>
 using namespace std ;
-char rgx[ 255 ] ;
 int main ( int argc, char *argv[] )
 {
   if( argc < 3 ) return -1 ;
-  char *rc = argv[ 1 ] ;
-  std::vector < int > vlp ;
-  while ( *rc )
-  {
-    char *p = 0 ;
-    for( int i = 0 ; i < matcher_count && ! p ; i++ )
-    {
-      p = check_fns[ i ].rgx_chk( rc ) ;
-      if( p )
-      {
-        rc = p ;
-        vlp.push_back( i ) ;
-      }
-    }
-    if ( ! p ) rc++ ;
-  }
+  std::vector< int > vlp = move( break_ops( argv[ 1 ] ) );
   char *sr = argv[ 2 ] ;
   while( *sr )
   {
