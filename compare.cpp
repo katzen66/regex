@@ -1,6 +1,5 @@
 #include "compare.h"
 #include <cctype>
-#include <vector>
 
 bool is_alnum( char c ) { return ( is_alpha( c ) || is_digit( c ) ) ; }
 bool is_alpha( char c ) { return ( is_lower( c ) || is_upper( c ) ) ; } 
@@ -114,27 +113,8 @@ check_pair check_fns[] = {
 
 int matcher_count = sizeof( check_fns ) / sizeof( check_fns[ 0 ] ) ;
 
-std::vector < int > break_ops( char *rgx )
-{
-  std::vector < int > vlp ;
-  while ( *rgx )
-  {
-    char *p = 0 ;
-    for( int i = 0 ; i < matcher_count && ! p ; i++ )
-    {
-      p = check_fns[ i ].rgx_chk( rgx ) ;
-      if( p )
-      {
-        rgx = p ;
-        vlp.push_back( i ) ;
-      }
-    }
-    if ( ! p ) rgx++ ;
-  }
-  return vlp ;
-}
-
-std::vector < EVAL_BLOCK > break_ops_BLOCK( char *rgx )
+#include <vector>
+std::vector < EVAL_BLOCK > break_ops( char *rgx )
 {
   std::vector < EVAL_BLOCK > vlp ;
   EVAL_BLOCK tcr ;

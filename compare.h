@@ -39,14 +39,12 @@ typedef struct
 extern int matcher_count;
 extern check_pair check_fns[];
 
-#include <vector>
-std::vector < int > break_ops( char *rgx );
-
 struct EVAL_BLOCK
 {
   check_fn chk;
   int MIN, MAX;
 } ;
-std::vector < EVAL_BLOCK > break_ops_BLOCK( char *rgx );
+#include <vector>
+std::vector < EVAL_BLOCK > break_ops( char *rgx );
 
 #endif

@@ -5,9 +5,7 @@ using namespace std ;
 int main ( int argc, char *argv[] )
 {
   if( argc < 3 ) return -1 ;
-  std::vector < int > vlp = move( break_ops( argv[ 1 ] ) );
-  std::vector < EVAL_BLOCK > vlb = move( break_ops_BLOCK( argv[ 1 ] ) ) ;
-  for( auto op : vlp ) cout << op << "|" ; cout << "\n" ;
+  std::vector < EVAL_BLOCK > vlb = move( break_ops( argv[ 1 ] ) ) ;
   for( EVAL_BLOCK op: vlb ) cout << op.MIN << ", " << op.MAX << "|";
   char *sr = argv[ 2 ] ;
   while( *sr )
@@ -15,10 +13,10 @@ int main ( int argc, char *argv[] )
     char *nw = sr ;
     int op_index = 0 ;
     bool ok = 1 ;
-    for( ; ok && *nw && op_index < vlp.size() ; op_index++ )
-      if( ! check_fns[ vlp[ op_index ] ].str_chk( *( nw++ ) ) )
+    for( ; ok && *nw && op_index < vlb.size() ; op_index++ )
+      if( ! vlb[ op_index ].chk( *( nw++ ) ) )
         ok = 0 ;
-    if( op_index != vlp.size() ) ok = 0 ;
+    if( op_index != vlb.size() ) ok = 0 ;
     if( ok )
     {
       cout << "matches\n" ;
