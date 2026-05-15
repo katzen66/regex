@@ -34,7 +34,7 @@ typedef struct
 {
   match_fn rgx_chk;
   check_fn str_chk;
-} check_pair ;
+} check_pair;
 
 extern int matcher_count;
 extern check_pair check_fns[];
@@ -42,10 +42,11 @@ extern check_pair check_fns[];
 #include <vector>
 std::vector < int > break_ops( char *rgx );
 
-struct REGEX_MATCH
+struct EVAL_BLOCK
 {
-  char *now ;
-  bool (*eval)( char c ) ;
-  REGEX_MATCH *depends_on ;
+  check_fn chk;
+  int MIN, MAX;
 } ;
+std::vector < EVAL_BLOCK > break_ops_BLOCK( char *rgx );
+
 #endif

@@ -5,7 +5,10 @@ using namespace std ;
 int main ( int argc, char *argv[] )
 {
   if( argc < 3 ) return -1 ;
-  std::vector< int > vlp = move( break_ops( argv[ 1 ] ) );
+  std::vector < int > vlp = move( break_ops( argv[ 1 ] ) );
+  std::vector < EVAL_BLOCK > vlb = move( break_ops_BLOCK( argv[ 1 ] ) ) ;
+  for( auto op : vlp ) cout << op << "|" ; cout << "\n" ;
+  for( EVAL_BLOCK op: vlb ) cout << op.MIN << ", " << op.MAX << "|";
   char *sr = argv[ 2 ] ;
   while( *sr )
   {
