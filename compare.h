@@ -15,4 +15,35 @@ bool is_space( char c ); // all horizontal or vertical whitespace
 bool is_upper( char c ); // all upper case letters
 bool is_xdigit( char c ); // all hexadecimal digits
 
+char *match_alnum( char *c ); // match [[:alnum:]]
+char *match_alpha( char *c ); // match [[:alpha:]]
+char *match_blank( char *c ); // match [[:blank:]]
+char *match_cntrl( char *c ); // match [[:cntrl:]]
+char *match_digit( char *c ); // match [[:digit:]]
+char *match_graph( char *c ); // match [[:graph:]]
+char *match_lower( char *c ); // match [[:lower:]]
+char *match_print( char *c ); // match [[:print:]]
+char *match_punct( char *c ); // match [[:punct:]]
+char *match_space( char *c ); // match [[:space:]]
+char *match_upper( char *c ); // match [[:upper:]]
+char *match_xdigit( char *c ); // match [[:xdigit:]]
+
+typedef char *( *match_fn )( char * );
+typedef bool ( *check_fn )( char );
+typedef struct
+{
+  match_fn rgx_chk;
+  check_fn str_chk;
+} check_pair ;
+
+extern int matcher_count;
+extern check_pair check_fns[] ;
+
+
+struct REGEX_MATCH
+{
+  char *now ;
+  bool (*eval)( char c ) ;
+  REGEX_MATCH *depends_on ;
+} ;
 #endif

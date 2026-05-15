@@ -1,5 +1,6 @@
 #include "compare.h"
 #include <cctype>
+
 bool is_alnum( char c ) { return ( is_alpha( c ) || is_digit( c ) ) ; }
 bool is_alpha( char c ) { return ( is_lower( c ) || is_upper( c ) ) ; } 
 bool is_blank( char c ) { return ( c == ' ' || c == '\t' ) ; } 
@@ -12,3 +13,94 @@ bool is_punct( char c ) { return is_graph( c ) && ( ! is_alnum( c ) ) ; } ;
 bool is_space( char c ) { return ( is_blank( c ) || c == '\n' || c == '\r' || c == '\f' || c == '\v' ) ; } 
 bool is_upper( char c ) { return std::isupper( c ) ; }
 bool is_xdigit( char c ) { return ( is_digit( c ) || ( 'a' <= c && c <= 'f' ) || ( 'A' <= c && c <= 'F' ) ) ; }
+
+char *match_alnum( char *c )
+{
+  const char *str = "[[:alnum:]]" ;
+  for( ; *str && *str == *c; str++, c++ ) ;
+  return ( ! *str ? c : 0 ) ;
+}
+char *match_alpha( char *c )
+{
+  const char *str = "[[:alpha:]]" ;
+  for( ; *str && *str == *c; str++, c++ ) ;
+  return ( ! *str ? c : 0 ) ;
+}
+char *match_blank( char *c )
+{
+  const char *str = "[[:blank:]]" ;
+  for( ; *str && *str == *c; str++, c++ ) ;
+  return ( ! *str ? c : 0 ) ;
+}
+char *match_cntrl( char *c )
+{
+  const char *str = "[[:cntrl:]]" ;
+  for( ; *str && *str == *c; str++, c++ ) ;
+  return ( ! *str ? c : 0 ) ;
+}
+char *match_digit( char *c )
+{
+  const char *str = "[[:digit:]]" ;
+  for( ; *str && *str == *c; str++, c++ ) ;
+  return ( ! *str ? c : 0 ) ;
+}
+char *match_graph( char *c )
+{
+  const char *str = "[[:graph:]]" ;
+  for( ; *str && *str == *c; str++, c++ ) ;
+  return ( ! *str ? c : 0 ) ;
+}
+char *match_lower( char *c )
+{
+  const char *str = "[[:lower:]]" ;
+  for( ; *str && *str == *c; str++, c++ ) ;
+  return ( ! *str ? c : 0 ) ;
+}
+char *match_print( char *c )
+{
+  const char *str = "[[:print:]]" ;
+  for( ; *str && *str == *c; str++, c++ ) ;
+  return ( ! *str ? c : 0 ) ;
+}
+char *match_punct( char *c )
+{
+  const char *str = "[[:punct:]]" ;
+  for( ; *str && *str == *c; str++, c++ ) ;
+  return ( ! *str ? c : 0 ) ;
+}
+char *match_space( char *c )
+{
+  const char *str = "[[:space:]]" ;
+  for( ; *str && *str == *c; str++, c++ ) ;
+  return ( ! *str ? c : 0 ) ;
+}
+char *match_upper( char *c )
+{
+  const char *str = "[[:upper:]]" ;
+  for( ; *str && *str == *c; str++, c++ ) ;
+  return ( ! *str ? c : 0 ) ;
+}
+char *match_xdigit( char *c )
+{
+  const char *str = "[[:xdigit:]]" ;
+  for( ; *str && *str == *c; str++, c++ ) ;
+  return ( ! *str ? c : 0 ) ;
+}
+
+check_pair check_fns[] = {
+
+  { match_alnum, is_alnum },
+  { match_alpha, is_alpha },
+  { match_blank, is_blank },
+  { match_cntrl, is_cntrl },
+  { match_digit, is_digit },
+  { match_graph, is_graph },
+  { match_lower, is_lower },
+  { match_print, is_print },
+  { match_punct, is_punct },
+  { match_space, is_space },
+  { match_upper, is_upper },
+  { match_xdigit, is_xdigit },
+} ;
+
+int matcher_count = sizeof( check_fns ) / sizeof( check_fns[ 0 ] ) ;

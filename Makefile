@@ -1,10 +1,17 @@
 compare.o: compare.cpp compare.h
 	gcc -fPIC -c compare.cpp -o compare.o
-test.o: compare.o test.cpp
+
+test.o: test.cpp
 	gcc -fPIC -c test.cpp -o test.o
-test: test.o
+test: compare.o test.o
 	g++ test.o compare.o -o test
+
+interpret.o: interpret.cpp
+	gcc -fPIC -c interpret.cpp -o interpret.o
+interpret: compare.o interpret.o
+	g++ interpret.o compare.o -o interpret
+
 clean:
-	rm test test.o compare.o
+	rm test test.o interpret interpret.o compare.o > /dev/null 2>&1
 
 .PHONY: clean
