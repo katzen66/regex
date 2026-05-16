@@ -10,8 +10,14 @@ bool rec( int op_id, char *bg )
   for( unsigned int len = vlb[ op_id ].MIN ; len <= vlb[ op_id ].MAX ; len++ )
   {
     for( unsigned int cl = 0 ; cl < len ; cl++ )
-      if( ! vlb[ op_id ].chk( *( bg + cl ) ) )
-        return 0 ;
+    {
+      if( vlb[ op_id ].chk )
+      {
+        if( ! vlb[ op_id ].chk( *( bg + cl ) ) )
+          return 0 ;
+      }
+      else if( vlb[ op_id ].chrq != *( bg + cl ) ) return 0 ;
+    }
     if( rec( op_id + 1, bg + len ) ) return 1 ;
   }
   return 0 ;

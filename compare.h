@@ -43,9 +43,10 @@ extern check_pair check_fns[];
 
 struct EVAL_BLOCK
 {
-  check_fn chk;
+  check_fn chk = 0;
   unsigned int MIN, MAX;
-} ;
+  char chrq = 0 ;
+};
 #include <vector>
 std::vector < EVAL_BLOCK > break_ops( char *rgx );
 
