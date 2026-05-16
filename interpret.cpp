@@ -2,29 +2,26 @@
 #include <iostream>
 #include <vector>
 using namespace std ;
+std::vector < EVAL_BLOCK > vlb ;
+bool rec( int op_id, char *bg )
+{
+  if( op_id == vlb.size() ) return 1 ;
+  
+  for( unsigned int len = vlb[ op_id ].MIN ; len <= vlb[ op_id ].MAX ; len++ )
+  {
+    for( unsigned int cl = 0 ; cl < len ; cl++ )
+      if( ! vlb[ op_id ].chk( *( bg + cl ) ) )
+        return 0 ;
+    if( rec( op_id + 1, bg + len ) ) return 1 ;
+  }
+  return 0 ;
+}
 int main ( int argc, char *argv[] )
 {
   if( argc < 3 ) return -1 ;
-  std::vector < EVAL_BLOCK > vlb = move( break_ops( argv[ 1 ] ) ) ;
+  vlb = move(break_ops( argv[ 1 ] ) ) ;
   for( EVAL_BLOCK op: vlb ) cout << op.MIN << ", " << op.MAX << "|";
-  char *sr = argv[ 2 ] ;
-  while( *sr )
-  {
-    char *nw = sr ;
-    int op_index = 0 ;
-    bool ok = 1 ;
-    for( ; ok && *nw && op_index < vlb.size() ; op_index++ )
-      if( ! vlb[ op_index ].chk( *( nw++ ) ) )
-        ok = 0 ;
-    if( op_index != vlb.size() ) ok = 0 ;
-    if( ok )
-    {
-      cout << "matches\n" ;
-      return 1 ;
-    }
-    sr++ ;
-  }
-  cout << "nope\n" ;
+  cout << "\n\n" << rec( 0, argv[ 2 ] ) << "\n" ;
   return 0;
 
 }

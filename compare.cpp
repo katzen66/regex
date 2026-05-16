@@ -13,6 +13,7 @@ bool is_punct( char c ) { return is_graph( c ) && ( ! is_alnum( c ) ) ; } ;
 bool is_space( char c ) { return ( is_blank( c ) || c == '\n' || c == '\r' || c == '\f' || c == '\v' ) ; } 
 bool is_upper( char c ) { return std::isupper( c ) ; }
 bool is_xdigit( char c ) { return ( is_digit( c ) || ( 'a' <= c && c <= 'f' ) || ( 'A' <= c && c <= 'F' ) ) ; }
+bool is_any( char c ) { return ( c != '\0' ) ; }
 
 char *match_alnum( char *c )
 {
@@ -20,25 +21,25 @@ char *match_alnum( char *c )
   char *d = c ;
   for( ; *shr && *shr == *d ; shr++, d++ ) ;
   if( ! *shr ) return d ;
-  for( ; *str && *str == *c; str++, c++ ) ;
+  for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_alpha( char *c )
 {
   const char *str = "[[:alpha:]]" ;
-  for( ; *str && *str == *c; str++, c++ ) ;
+  for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_blank( char *c )
 {
   const char *str = "[[:blank:]]" ;
-  for( ; *str && *str == *c; str++, c++ ) ;
+  for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_cntrl( char *c )
 {
   const char *str = "[[:cntrl:]]" ;
-  for( ; *str && *str == *c; str++, c++ ) ;
+  for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_digit( char *c )
@@ -47,31 +48,31 @@ char *match_digit( char *c )
   char *d = c ;
   for( ; *shr && *shr == *d ; shr++, d++ ) ;
   if( ! *shr ) return d ;
-  for( ; *str && *str == *c; str++, c++ ) ;
+  for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_graph( char *c )
 {
   const char *str = "[[:graph:]]" ;
-  for( ; *str && *str == *c; str++, c++ ) ;
+  for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_lower( char *c )
 {
   const char *str = "[[:lower:]]" ;
-  for( ; *str && *str == *c; str++, c++ ) ;
+  for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_print( char *c )
 {
   const char *str = "[[:print:]]" ;
-  for( ; *str && *str == *c; str++, c++ ) ;
+  for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_punct( char *c )
 {
   const char *str = "[[:punct:]]" ;
-  for( ; *str && *str == *c; str++, c++ ) ;
+  for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_space( char *c )
@@ -80,19 +81,28 @@ char *match_space( char *c )
   char *d = c ;
   for( ; *shr && *shr == *d ; shr++, d++ ) ;
   if( ! *shr ) return d ;
-  for( ; *str && *str == *c; str++, c++ ) ;
+  for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_upper( char *c )
 {
   const char *str = "[[:upper:]]" ;
-  for( ; *str && *str == *c; str++, c++ ) ;
+  for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_xdigit( char *c )
 {
   const char *str = "[[:xdigit:]]" ;
-  for( ; *str && *str == *c; str++, c++ ) ;
+  for( ; *str && *str == *c ; str++, c++ ) ;
+  return ( ! *str ? c : 0 ) ;
+}
+char *match_any( char *c )
+{
+  const char *str = "[[:any:]]", *shr = "." ;
+  char *d = c ;
+  for( ; *shr && *shr == *d ; shr++, d++ ) ;
+  if( ! *shr ) return d ;
+  for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 
@@ -109,6 +119,7 @@ check_pair check_fns[] = {
   { match_space, is_space },
   { match_upper, is_upper },
   { match_xdigit, is_xdigit },
+  { match_any, is_any }
 } ;
 
 int matcher_count = sizeof( check_fns ) / sizeof( check_fns[ 0 ] ) ;
@@ -129,7 +140,7 @@ std::vector < EVAL_BLOCK > break_ops( char *rgx )
       {
         tcr.chk = check_fns[ i ].str_chk ;
         if( *p == '+' )  tcr.MIN = 1, tcr.MAX = -1, p++ ;
-        else if( *p == '*' ) tcr.MIN = 0, tcr.MAX =-1, p++ ;
+        else if( *p == '*' ) tcr.MIN = 0, tcr.MAX = -1, p++ ;
         else if( *p == '?' ) tcr.MIN = 0, tcr.MAX = 1, p++ ;
         else if( *p == '{' ) // we consider no spacing, for now only n exact
         {

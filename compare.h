@@ -14,6 +14,7 @@ bool is_punct( char c ); // all punctuation characters
 bool is_space( char c ); // all horizontal or vertical whitespace
 bool is_upper( char c ); // all upper case letters
 bool is_xdigit( char c ); // all hexadecimal digits
+bool is_any( char c ); // any character
 
 char *match_alnum( char *c ); // match [[:alnum:]]
 char *match_alpha( char *c ); // match [[:alpha:]]
@@ -27,6 +28,7 @@ char *match_punct( char *c ); // match [[:punct:]]
 char *match_space( char *c ); // match [[:space:]]
 char *match_upper( char *c ); // match [[:upper:]]
 char *match_xdigit( char *c ); // match [[:xdigit:]]
+char *match_any( char *c ); // match [[:any:]]
 
 typedef char *( *match_fn )( char * );
 typedef bool ( *check_fn )( char );
@@ -42,7 +44,7 @@ extern check_pair check_fns[];
 struct EVAL_BLOCK
 {
   check_fn chk;
-  int MIN, MAX;
+  unsigned int MIN, MAX;
 } ;
 #include <vector>
 std::vector < EVAL_BLOCK > break_ops( char *rgx );
