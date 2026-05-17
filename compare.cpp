@@ -165,3 +165,14 @@ std::vector < EVAL_BLOCK > break_ops( char *rgx )
   }
   return vlp ;
 }
+
+bool eval_chr( EVAL_BLOCK *blk, char chr )
+{
+  if( blk->chk )
+  {
+    if( ! blk->chk( chr ) )
+      return 0 ;
+  }
+  else if( blk->chrq != chr ) return 0 ;
+  return 1 ;
+}

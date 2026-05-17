@@ -6,18 +6,10 @@ std::vector < EVAL_BLOCK > vlb ;
 char *rec( int op_id, char *bg )
 {
   if( op_id == vlb.size() ) return bg ;
-  
-  for( unsigned int len = vlb[ op_id ].MIN ; len <= vlb[ op_id ].MAX ; len++ )
+  unsigned int lmx = 0 ;
+  while( eval_chr( &vlb[ op_id ], *( bg + lmx ) ) && lmx <= vlb[ op_id ].MAX ) lmx++ ;
+  for( long long len = lmx ; len >= vlb[ op_id ].MIN ; len-- )
   {
-    for( unsigned int cl = 0 ; cl < len ; cl++ )
-    {
-      if( vlb[ op_id ].chk )
-      {
-        if( ! vlb[ op_id ].chk( *( bg + cl ) ) )
-          return 0 ;
-      }
-      else if( vlb[ op_id ].chrq != *( bg + cl ) ) return 0 ;
-    }
     char *eom = rec( op_id + 1, bg + len ) ;
     if( eom ) return eom ;
   }
