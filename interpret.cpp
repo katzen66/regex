@@ -18,12 +18,22 @@ char *rec( int op_id, char *bg )
 int main ( int argc, char *argv[] )
 {
   if( argc < 3 ) return -1 ;
-  vlb = move(break_ops( argv[ 1 ] ) ) ;
+  char *regex = argv[ 1 ], *string = argv[ 2 ];
+  vlb = move(break_ops( regex + ( *regex == '^' ) ) ) ;
   for( EVAL_BLOCK op: vlb ) cout << op.MIN << ", " << op.MAX << "|";
-  char *end = rec( 0, argv[ 2 ] ) ;
+  char *itr = string ;
+  char *end = 0 ;
+  if( *regex != '^' )
+  {
+    for( ; *itr ; itr++ )
+    {
+      end = rec( 0, itr ) ;
+      if( end ) break ;
+    }
+  }
+  else rec( 0, itr ) ; 
   if( end )
   {
-    char *itr = argv[ 2 ] ;
     while( itr != end ) cout << *itr++ ;
   }
   else cout << "NULL";
