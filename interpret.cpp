@@ -3,9 +3,9 @@
 #include <vector>
 using namespace std ;
 std::vector < EVAL_BLOCK > vlb ;
-bool rec( int op_id, char *bg )
+char *rec( int op_id, char *bg )
 {
-  if( op_id == vlb.size() ) return 1 ;
+  if( op_id == vlb.size() ) return bg ;
   
   for( unsigned int len = vlb[ op_id ].MIN ; len <= vlb[ op_id ].MAX ; len++ )
   {
@@ -18,7 +18,8 @@ bool rec( int op_id, char *bg )
       }
       else if( vlb[ op_id ].chrq != *( bg + cl ) ) return 0 ;
     }
-    if( rec( op_id + 1, bg + len ) ) return 1 ;
+    char *eom = rec( op_id + 1, bg + len ) ;
+    if( eom ) return eom ;
   }
   return 0 ;
 }
@@ -27,7 +28,14 @@ int main ( int argc, char *argv[] )
   if( argc < 3 ) return -1 ;
   vlb = move(break_ops( argv[ 1 ] ) ) ;
   for( EVAL_BLOCK op: vlb ) cout << op.MIN << ", " << op.MAX << "|";
-  cout << "\n\n" << rec( 0, argv[ 2 ] ) << "\n" ;
+  char *end = rec( 0, argv[ 2 ] ) ;
+  if( end )
+  {
+    char *itr = argv[ 2 ] ;
+    while( itr != end ) cout << *itr++ ;
+  }
+  else cout << "NULL";
+  cout << "\n" ;
   return 0;
 
 }
