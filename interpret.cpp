@@ -31,7 +31,7 @@ int main ( int argc, char *argv[] )
       if( end ) break ;
     }
   }
-  else rec( 0, itr ) ; 
+  else end = rec( 0, itr ) ; 
   if( end )
   {
     while( itr != end ) cout << *itr++ ;
