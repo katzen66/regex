@@ -133,35 +133,34 @@ std::vector < EVAL_BLOCK > break_ops( char *rgx )
   {
     char *p = 0 ;
     tcr = { 0 } ;
+    
     for( int i = 0 ; i < matcher_count && ! p ; i++ )
     {
       p = check_fns[ i ].rgx_chk( rgx ) ;
       if( p ) tcr.chk = check_fns[ i ].str_chk ;
     }
-    if( p )
-    {
-      tcr.chrq = 0 ;
-      if( *p == '+' )  tcr.MIN = 1, tcr.MAX = -1, p++ ;
-      else if( *p == '*' ) tcr.MIN = 0, tcr.MAX = -1, p++ ;
-      else if( *p == '?' ) tcr.MIN = 0, tcr.MAX = 1, p++ ;
-      else if( *p == '{' ) // we consider no spacing, for now only n exact
-      {
-        p++ ;
-        int nr = 0 ;
-        while( is_digit( *p ) ) nr = nr * 10 + ( *p - '0' ), p++ ;
-        tcr.MIN = tcr.MAX = nr ;
-        if( *p ) p++ ;
-      }
-      else tcr.MIN = tcr.MAX = 1 ;
-      rgx = p ;
-    }
+    if( p ) tcr.chrq = 0 ;
     else
     {
       tcr.chk = 0 ;
       tcr.chrq = *rgx ;
-      tcr.MIN = tcr.MAX = 1 ;
-      rgx++ ;
+      p = ( rgx + 1 ) ;
     }
+
+    if( *p == '+' ) tcr.MIN = 1, tcr.MAX = -1, p++ ;
+    else if( *p == '*' ) tcr.MIN = 0, tcr.MAX = -1, p++ ;
+    else if( *p == '?' ) tcr.MIN = 0, tcr.MAX = 1, p++ ;
+    else if( *p == '{' ) // we consider no spacing, for now only n exact
+    {
+      p++ ;
+      int nr = 0 ;
+      while( is_digit( *p ) ) nr = nr * 10 + ( *p - '0' ), p++ ;
+      tcr.MIN = tcr.MAX = nr ;
+      if( *p ) p++ ;
+    }
+    else tcr.MIN = tcr.MAX = 1 ;
+
+    rgx = p ;
     vlp.push_back( tcr ) ;
   }
   return vlp ;
