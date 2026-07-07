@@ -143,7 +143,8 @@ std::vector < EVAL_BLOCK > break_ops( char *rgx )
     else
     {
       tcr.chk = 0 ;
-      tcr.chrq = *rgx ;
+      if( *rgx == '\\' ) tcr.chrq = *( ++rgx );
+      else tcr.chrq = *rgx ;
       p = ( rgx + 1 ) ;
     }
 
