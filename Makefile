@@ -7,6 +7,6 @@ interpret: compare.o interpret.o
 	g++ interpret.o compare.o -o interpret
 
 clean:
-	rm test test.o interpret interpret.o compare.o > /dev/null 2>&1
+	rm interpret interpret.o compare.o > /dev/null 2>&1
 
 .PHONY: clean
