@@ -196,8 +196,13 @@ std::vector < EVAL_BLOCK > break_ops( char *rgx )
 
 char *rec( int op_id, char *bg, std::vector < EVAL_BLOCK > &vlb)
 {
-  if( op_id == vlb.size() ) return bg ;
-  EVAL_BLOCK *e = &vlb[ op_id ] ;
+  if( ( op_id & ( ~boffset ) ) == vlb.size() )
+  {
+    bool match_end = op_id & boffset ;
+    if( match_end && *bg ) return 0 ;
+    return bg ;
+  }
+  EVAL_BLOCK *e = &vlb[ op_id & ( ~boffset ) ] ;
   unsigned int lmx = 0 ;
   if( e->chk )
   {

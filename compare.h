@@ -51,6 +51,7 @@ struct EVAL_BLOCK
   std::vector < char > charps;
 };
 std::vector < EVAL_BLOCK > break_ops( char *rgx );
+const int boffset = ( 1 << 31 ) ;
 char *rec( int op_id, char *bg, std::vector < EVAL_BLOCK > &vlb);
 
 #endif
