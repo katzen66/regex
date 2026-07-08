@@ -147,8 +147,20 @@ std::vector < EVAL_BLOCK > break_ops( char *rgx )
     if( ! p )
     {
       tcr.chk = 0 ;
-      if( *rgx == '\\' ) tcr.charps.push_back( *( ++rgx ) );
-      else tcr.charps.push_back( *rgx ) ;
+      switch (* rgx)
+      {
+        case '\\' :
+          tcr.charps.push_back( *( ++rgx ) ) ;
+          break ;
+
+        case '[' :
+          while( *( ++rgx ) != ']' ) tcr.charps.push_back( *( rgx ) ) ;
+          break ;
+
+        default :
+          tcr.charps.push_back( *rgx ) ;
+          break ;
+      }
       p = ( rgx + 1 ) ;
     }
     if( *p == '+' ) tcr.MIN = 1, tcr.MAX = -1, p++ ;
