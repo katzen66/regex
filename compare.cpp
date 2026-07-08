@@ -177,3 +177,16 @@ bool eval_chr( EVAL_BLOCK *blk, char chr )
   else if( blk->chrq != chr ) return 0 ;
   return 1 ;
 }
+
+char *rec( int op_id, char *bg, std::vector < EVAL_BLOCK > &vlb)
+{
+  if( op_id == vlb.size() ) return bg ;
+  unsigned int lmx = 0 ;
+  while( eval_chr( &vlb[ op_id ], *( bg + lmx ) ) && lmx < vlb[ op_id ].MAX ) lmx++ ;
+  for( long long len = lmx ; len >= vlb[ op_id ].MIN ; len-- )
+  {
+    char *eom = rec( op_id + 1, bg + len, vlb) ;
+    if( eom ) return eom ;
+  }
+  return 0 ;
+}

@@ -50,5 +50,6 @@ struct EVAL_BLOCK
 #include <vector>
 std::vector < EVAL_BLOCK > break_ops( char *rgx );
 bool eval_chr( EVAL_BLOCK *blk, char chr );
+char *rec( int op_id, char *bg, std::vector < EVAL_BLOCK > &vlb);
 
 #endif
