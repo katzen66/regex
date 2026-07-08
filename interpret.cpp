@@ -3,18 +3,6 @@
 #include <vector>
 using namespace std ;
 std::vector < EVAL_BLOCK > vlb ;
-char *rec( int op_id, char *bg )
-{
-  if( op_id == vlb.size() ) return bg ;
-  unsigned int lmx = 0 ;
-  while( eval_chr( &vlb[ op_id ], *( bg + lmx ) ) && lmx < vlb[ op_id ].MAX ) lmx++ ;
-  for( long long len = lmx ; len >= vlb[ op_id ].MIN ; len-- )
-  {
-    char *eom = rec( op_id + 1, bg + len ) ;
-    if( eom ) return eom ;
-  }
-  return 0 ;
-}
 int main ( int argc, char *argv[] )
 {
   if( argc < 3 ) return -1 ;
@@ -27,11 +15,11 @@ int main ( int argc, char *argv[] )
   {
     for( ; *itr ; itr++ )
     {
-      end = rec( 0, itr ) ;
+      end = rec( 0, itr, vlb ) ;
       if( end ) break ;
     }
   }
-  else end = rec( 0, itr ) ; 
+  else end = rec( 0, itr, vlb ) ;
   if( end )
   {
     while( itr != end ) cout << *itr++ ;
