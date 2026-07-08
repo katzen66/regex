@@ -22,7 +22,7 @@ bool is_inlist( char c, std::vector < char > &chrps )
 
 char *match_alnum( char *c )
 {
-  const char *str = "[[:alnum:]]", *shr = "\\w" ;
+  const char *str = "[:alnum:]", *shr = "\\w" ;
   char *d = c ;
   for( ; *shr && *shr == *d ; shr++, d++ ) ;
   if( ! *shr ) return d ;
@@ -31,25 +31,25 @@ char *match_alnum( char *c )
 }
 char *match_alpha( char *c )
 {
-  const char *str = "[[:alpha:]]" ;
+  const char *str = "[:alpha:]" ;
   for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_blank( char *c )
 {
-  const char *str = "[[:blank:]]" ;
+  const char *str = "[:blank:]" ;
   for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_cntrl( char *c )
 {
-  const char *str = "[[:cntrl:]]" ;
+  const char *str = "[:cntrl:]" ;
   for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_digit( char *c )
 {
-  const char *str = "[[:digit:]]", *shr = "\\d" ;
+  const char *str = "[:digit:]", *shr = "\\d" ;
   char *d = c ;
   for( ; *shr && *shr == *d ; shr++, d++ ) ;
   if( ! *shr ) return d ;
@@ -58,31 +58,31 @@ char *match_digit( char *c )
 }
 char *match_graph( char *c )
 {
-  const char *str = "[[:graph:]]" ;
+  const char *str = "[:graph:]" ;
   for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_lower( char *c )
 {
-  const char *str = "[[:lower:]]" ;
+  const char *str = "[:lower:]" ;
   for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_print( char *c )
 {
-  const char *str = "[[:print:]]" ;
+  const char *str = "[:print:]" ;
   for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_punct( char *c )
 {
-  const char *str = "[[:punct:]]" ;
+  const char *str = "[:punct:]" ;
   for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_space( char *c )
 {
-  const char *str = "[[:space:]]", *shr = "\\s" ;
+  const char *str = "[:space:]", *shr = "\\s" ;
   char *d = c ;
   for( ; *shr && *shr == *d ; shr++, d++ ) ;
   if( ! *shr ) return d ;
@@ -91,19 +91,19 @@ char *match_space( char *c )
 }
 char *match_upper( char *c )
 {
-  const char *str = "[[:upper:]]" ;
+  const char *str = "[:upper:]" ;
   for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_xdigit( char *c )
 {
-  const char *str = "[[:xdigit:]]" ;
+  const char *str = "[:xdigit:]" ;
   for( ; *str && *str == *c ; str++, c++ ) ;
   return ( ! *str ? c : 0 ) ;
 }
 char *match_any( char *c )
 {
-  const char *str = "[[:any:]]", *shr = "." ;
+  const char *str = "[:any:]", *shr = "." ;
   char *d = c ;
   for( ; *shr && *shr == *d ; shr++, d++ ) ;
   if( ! *shr ) return d ;

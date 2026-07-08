@@ -18,19 +18,19 @@ bool is_any( char c ); // any character
 #include <vector>
 bool is_inlist( char c, std::vector < char > &charps ); // [] character lists
 
-char *match_alnum( char *c ); // match [[:alnum:]]
-char *match_alpha( char *c ); // match [[:alpha:]]
-char *match_blank( char *c ); // match [[:blank:]]
-char *match_cntrl( char *c ); // match [[:cntrl:]]
-char *match_digit( char *c ); // match [[:digit:]]
-char *match_graph( char *c ); // match [[:graph:]]
-char *match_lower( char *c ); // match [[:lower:]]
-char *match_print( char *c ); // match [[:print:]]
-char *match_punct( char *c ); // match [[:punct:]]
-char *match_space( char *c ); // match [[:space:]]
-char *match_upper( char *c ); // match [[:upper:]]
-char *match_xdigit( char *c ); // match [[:xdigit:]]
-char *match_any( char *c ); // match [[:any:]]
+char *match_alnum( char *c ); // match [:alnum:]
+char *match_alpha( char *c ); // match [:alpha:]
+char *match_blank( char *c ); // match [:blank:]
+char *match_cntrl( char *c ); // match [:cntrl:]
+char *match_digit( char *c ); // match [:digit:]
+char *match_graph( char *c ); // match [:graph:]
+char *match_lower( char *c ); // match [:lower:]
+char *match_print( char *c ); // match [:print:]
+char *match_punct( char *c ); // match [:punct:]
+char *match_space( char *c ); // match [:space:]
+char *match_upper( char *c ); // match [:upper:]
+char *match_xdigit( char *c ); // match [:xdigit:]
+char *match_any( char *c ); // match [:any:]
 
 typedef char *( *match_fn )( char * );
 typedef bool ( *check_fn )( char );
