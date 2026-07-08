@@ -14,6 +14,11 @@ bool is_space( char c ) { return ( is_blank( c ) || c == '\n' || c == '\r' || c 
 bool is_upper( char c ) { return std::isupper( c ) ; }
 bool is_xdigit( char c ) { return ( is_digit( c ) || ( 'a' <= c && c <= 'f' ) || ( 'A' <= c && c <= 'F' ) ) ; }
 bool is_any( char c ) { return ( c != '\0' ) ; }
+bool is_inlist( char c, std::vector < char > &chrps )
+{
+  for( char p: chrps ) if( c == p ) return !( 0 ) ;
+  return 0 ;
+}
 
 char *match_alnum( char *c )
 {
@@ -139,15 +144,13 @@ std::vector < EVAL_BLOCK > break_ops( char *rgx )
       p = check_fns[ i ].rgx_chk( rgx ) ;
       if( p ) tcr.chk = check_fns[ i ].str_chk ;
     }
-    if( p ) tcr.chrq = 0 ;
-    else
+    if( ! p )
     {
       tcr.chk = 0 ;
-      if( *rgx == '\\' ) tcr.chrq = *( ++rgx );
-      else tcr.chrq = *rgx ;
+      if( *rgx == '\\' ) tcr.charps.push_back( *( ++rgx ) );
+      else tcr.charps.push_back( *rgx ) ;
       p = ( rgx + 1 ) ;
     }
-
     if( *p == '+' ) tcr.MIN = 1, tcr.MAX = -1, p++ ;
     else if( *p == '*' ) tcr.MIN = 0, tcr.MAX = -1, p++ ;
     else if( *p == '?' ) tcr.MIN = 0, tcr.MAX = 1, p++ ;
@@ -167,22 +170,19 @@ std::vector < EVAL_BLOCK > break_ops( char *rgx )
   return vlp ;
 }
 
-bool eval_chr( EVAL_BLOCK *blk, char chr )
-{
-  if( blk->chk )
-  {
-    if( ! blk->chk( chr ) )
-      return 0 ;
-  }
-  else if( blk->chrq != chr ) return 0 ;
-  return 1 ;
-}
-
 char *rec( int op_id, char *bg, std::vector < EVAL_BLOCK > &vlb)
 {
   if( op_id == vlb.size() ) return bg ;
   unsigned int lmx = 0 ;
-  while( eval_chr( &vlb[ op_id ], *( bg + lmx ) ) && lmx < vlb[ op_id ].MAX ) lmx++ ;
+  if( vlb[ op_id ].chk )
+  {
+    while( vlb[ op_id ].chk( *( bg + lmx ) ) && lmx < vlb[ op_id ].MAX ) lmx++ ;
+  }
+  else
+  {
+    char cp = 0 ; if( is_inlist( *bg, vlb[ op_id ].charps ) ) cp = *bg ;
+    while( *( bg + lmx ) == cp && lmx < vlb[ op_id ].MAX ) lmx++ ;
+  }
   for( long long len = lmx ; len >= vlb[ op_id ].MIN ; len-- )
   {
     char *eom = rec( op_id + 1, bg + len, vlb) ;
