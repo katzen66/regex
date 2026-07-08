@@ -181,12 +181,18 @@ std::vector < EVAL_BLOCK > break_ops( char *rgx )
       if( *p == '+' ) tcr.MIN = 1, tcr.MAX = -1, p++ ;
       else if( *p == '*' ) tcr.MIN = 0, tcr.MAX = -1, p++ ;
       else if( *p == '?' ) tcr.MIN = 0, tcr.MAX = 1, p++ ;
-      else if( *p == '{' ) // we consider no spacing, for now only n exact
+      else if( *p == '{' )
       {
         p++ ;
         int nr = 0 ;
         while( is_digit( *p ) ) nr = nr * 10 + ( *p - '0' ), p++ ;
-        tcr.MIN = tcr.MAX = nr ;
+        tcr.MIN = nr ;
+        if( *p == '-' )
+        {
+          nr = 0 ; p++ ;
+          while( is_digit( *p ) ) nr = nr * 10 + ( *p - '0' ), p++ ;
+        }
+        tcr.MAX = nr ;
         if( *p ) p++ ;
       }
       else tcr.MIN = tcr.MAX = 1 ;
