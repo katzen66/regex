@@ -15,6 +15,7 @@ bool is_space( char c ); // all horizontal or vertical whitespace
 bool is_upper( char c ); // all upper case letters
 bool is_xdigit( char c ); // all hexadecimal digits
 bool is_any( char c ); // any character
+bool is_inlist( char c, char *list ); // [] character lists
 
 char *match_alnum( char *c ); // match [[:alnum:]]
 char *match_alpha( char *c ); // match [[:alpha:]]
@@ -41,13 +42,13 @@ typedef struct
 extern int matcher_count;
 extern check_pair check_fns[];
 
+#include <vector>
 struct EVAL_BLOCK
 {
   check_fn chk = 0;
   unsigned int MIN, MAX;
-  char chrq = 0 ;
+  std::vector < char > charps;
 };
-#include <vector>
 std::vector < EVAL_BLOCK > break_ops( char *rgx );
 bool eval_chr( EVAL_BLOCK *blk, char chr );
 
