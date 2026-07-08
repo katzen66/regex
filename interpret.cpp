@@ -8,7 +8,7 @@ int main ( int argc, char *argv[] )
   if( argc < 3 ) return -1 ;
   char *regex = argv[ 1 ], *string = argv[ 2 ];
   vlb = move(break_ops( regex + ( *regex == '^' ) ) ) ;
-  for( EVAL_BLOCK op: vlb ) cout << op.MIN << ", " << op.MAX << "|";
+  for( EVAL_BLOCK op: vlb ) cout << op.MIN << ", " << op.MAX << " ^ " << op.neg << "|";
   char *itr = string ;
   char *end = 0 ;
   if( *regex != '^' )

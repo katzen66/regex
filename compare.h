@@ -45,6 +45,7 @@ extern check_pair check_fns[];
 
 struct EVAL_BLOCK
 {
+  bool neg = 0 ;
   check_fn chk = 0;
   unsigned int MIN, MAX;
   std::vector < char > charps;

@@ -133,11 +133,10 @@ int matcher_count = sizeof( check_fns ) / sizeof( check_fns[ 0 ] ) ;
 std::vector < EVAL_BLOCK > break_ops( char *rgx )
 {
   std::vector < EVAL_BLOCK > vlp ;
-  EVAL_BLOCK tcr ;
+  EVAL_BLOCK tcr = { 0 } ;
   while ( *rgx )
   {
     char *p = 0 ;
-    tcr = { 0 } ;
     
     for( int i = 0 ; i < matcher_count && ! p ; i++ )
     {
@@ -157,27 +156,39 @@ std::vector < EVAL_BLOCK > break_ops( char *rgx )
           while( *( ++rgx ) != ']' ) tcr.charps.push_back( *( rgx ) ) ;
           break ;
 
+        case '^' :
+          tcr.neg = ! ( 0 ) ;
+          break ;
+
         default :
           tcr.charps.push_back( *rgx ) ;
           break ;
       }
-      p = ( rgx + 1 ) ;
+      if( *rgx != '^' ) p = ( rgx + 1 ) ;
     }
-    if( *p == '+' ) tcr.MIN = 1, tcr.MAX = -1, p++ ;
-    else if( *p == '*' ) tcr.MIN = 0, tcr.MAX = -1, p++ ;
-    else if( *p == '?' ) tcr.MIN = 0, tcr.MAX = 1, p++ ;
-    else if( *p == '{' ) // we consider no spacing, for now only n exact
+    if( p )
     {
-      p++ ;
-      int nr = 0 ;
-      while( is_digit( *p ) ) nr = nr * 10 + ( *p - '0' ), p++ ;
-      tcr.MIN = tcr.MAX = nr ;
-      if( *p ) p++ ;
+      if( *p == '+' ) tcr.MIN = 1, tcr.MAX = -1, p++ ;
+      else if( *p == '*' ) tcr.MIN = 0, tcr.MAX = -1, p++ ;
+      else if( *p == '?' ) tcr.MIN = 0, tcr.MAX = 1, p++ ;
+      else if( *p == '{' ) // we consider no spacing, for now only n exact
+      {
+        p++ ;
+        int nr = 0 ;
+        while( is_digit( *p ) ) nr = nr * 10 + ( *p - '0' ), p++ ;
+        tcr.MIN = tcr.MAX = nr ;
+        if( *p ) p++ ;
+      }
+      else tcr.MIN = tcr.MAX = 1 ;
+      vlp.push_back( tcr ) ;
+      tcr.neg = 0 ; tcr.charps.clear() ; tcr.chk = 0 ; 
+      rgx = p ;
     }
-    else tcr.MIN = tcr.MAX = 1 ;
-
-    rgx = p ;
-    vlp.push_back( tcr ) ;
+    else
+    {
+      rgx++ ;
+      p = 0 ;
+    }
   }
   return vlp ;
 }
@@ -185,17 +196,18 @@ std::vector < EVAL_BLOCK > break_ops( char *rgx )
 char *rec( int op_id, char *bg, std::vector < EVAL_BLOCK > &vlb)
 {
   if( op_id == vlb.size() ) return bg ;
+  EVAL_BLOCK *e = &vlb[ op_id ] ;
   unsigned int lmx = 0 ;
-  if( vlb[ op_id ].chk )
+  if( e->chk )
   {
-    while( vlb[ op_id ].chk( *( bg + lmx ) ) && lmx < vlb[ op_id ].MAX ) lmx++ ;
+    while( *( bg + lmx ) && ( bool( e->chk( *( bg + lmx ) ) ) ^ e->neg ) && lmx < e->MAX ) lmx++ ;
   }
   else
   {
-    char cp = 0 ; if( is_inlist( *bg, vlb[ op_id ].charps ) ) cp = *bg ;
-    while( *( bg + lmx ) == cp && lmx < vlb[ op_id ].MAX ) lmx++ ;
+    char cp = 0 ; if( is_inlist( *bg, e->charps ) ) cp = *bg ;
+    while( *( bg + lmx ) && ( ( *( bg + lmx ) == cp ) ^ e->neg ) && lmx < e->MAX ) lmx++ ;
   }
-  for( long long len = lmx ; len >= vlb[ op_id ].MIN ; len-- )
+  for( long long len = lmx ; len >= e->MIN ; len-- )
   {
     char *eom = rec( op_id + 1, bg + len, vlb) ;
     if( eom ) return eom ;
