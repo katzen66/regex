@@ -154,7 +154,16 @@ std::vector < EVAL_BLOCK > break_ops( char *rgx )
 
         case '[' :
           if( *( ++rgx ) == '^' ) tcr.neg = ! ( 0 ) ;
-          while( *rgx && *rgx != ']' ) tcr.charps.push_back( *( rgx++ ) ) ;
+          while( *rgx && *rgx != ']' )
+          {
+            if( *( rgx + 1 ) == '-' && *rgx <= *( rgx + 2 ) )
+            {
+              for( char c = *rgx ; c <= *( rgx + 2 ) ; c++ )
+                tcr.charps.push_back( c ) ;
+              rgx = ( rgx + 2 ) ;
+            }
+            else tcr.charps.push_back( *( rgx++ ) ) ;
+          }
           break ;
 
         case '^' :
